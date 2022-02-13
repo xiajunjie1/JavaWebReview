@@ -1,0 +1,12 @@
+实现登录认证功能
+
+该功能模块，采用的是JSP+JavaBean的模式完成的，JavaBean主要用于连接数据库，JSP
+主要是进行请求的接收以及对JavaBean的调用
+
+index.jsp:登录的主界面
+check.jsp:登录认证页面，该页面调用JavaBean访问数据库，检查用户信息
+welcome.jsp：登录成功后的认证页面
+DB_Util.java:数据库连接工具类
+
+
+暂未加入记住当前用户的功能，稍后完善 2022/1/24

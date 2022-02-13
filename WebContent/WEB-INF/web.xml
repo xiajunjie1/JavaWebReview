@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
   <display-name>WebTest1</display-name>
+  <context-param>
+    <param-name>myparam</param-name>
+    <param-value>xiajunjie123</param-value>
+  </context-param>
+  <context-param>
+    <param-name>myparam2</param-name>
+    <param-value>xia</param-value>
+  </context-param>
+  <context-param>
+    <param-name>myparam3</param-name>
+    <param-value>jun</param-value>
+  </context-param>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -10,13 +22,34 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <error-page>
-  <error-code>404</error-code><!-- 出现404错误 -->
-  <location>/ErrorPage404.jsp</location>
- 
-  </error-page><!-- 配置全局错误页，所有的页面只要出错会自动匹配 -->
-  
-  <error-page>
-  <error-code>500</error-code>
-  <location>/ErrorPage.jsp</location>
+    <error-code>404</error-code>
+    <location>/ErrorPage404.jsp</location>
   </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/ErrorPage.jsp</location>
+  </error-page>
+  <servlet>
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>com.maker.servlet.HelloServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/hello.action</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/hello/*</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+  <servlet-name>InputServlet</servlet-name>
+  <servlet-class>com.maker.servlet.InputServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>InputServlet</servlet-name>
+  <url-pattern>/input.action</url-pattern>
+  </servlet-mapping>
 </web-app>

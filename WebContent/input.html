@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请求表单</title>
+</head>
+<body>
+<form action="Request_Review.jsp" method="post">
+参数1:<input type="text" name="para1"/>
+参数2:<select name="para2">
+	<option  value=0 >绝密</option>
+	<option value=1>秘密</option>
+	<option value=2 selected>普通</option>
+</select>
+
+参数3：<input type="checkbox" name="para3" value="选项1" checked />
+	<input type="checkbox" name="para3" value="选项2" />
+	<input type="checkbox" name="para3" value="选项3" />
+	<input type="checkbox" name="para3" value="选项四">
+	
+	<input type="submit" value="提交">
+</form>
+</body>
+</html>

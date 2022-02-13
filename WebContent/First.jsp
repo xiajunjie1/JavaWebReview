@@ -58,6 +58,12 @@ out.println("<h2>number="+(number++)+"</h2>");
 out.println("<h2>常量："+Message+"</h2>");
 
 out.println("<h2>调用方法："+Sum(1,2,3,4,5,6,7)+"</h2>");
+
+
 %>
+
+<a >
+test
+</a>
 </body>
 </html>

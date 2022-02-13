@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>上传文件</title>
+</head>
+<body>
+<!-- 
+如果选择了上传文件，那么表单都会以二进制数据流的形式进行传输
+并且方法必须得选择post，只有这样，才能上传超过5k的数据
+ -->
+<form action="upload_do3.jsp" enctype="multipart/form-data" method="post">
+姓名：<input type="text" name="name" /><br/>
+角色：<input type="checkbox" name="role" value="admin">管理员
+	<input type="checkbox" name="role" value="user">用户
+	<input type="checkbox" name="role" value="guess">访客
+	<br/>
+图片：<input type="file" name="pic" /><br/>
+<button type="submit">提交</button>
+<button type="reset">重置</button>
+</form>
+</body>
+</html>
