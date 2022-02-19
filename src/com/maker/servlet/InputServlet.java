@@ -20,8 +20,8 @@ public class InputServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
+		//request.setCharacterEncoding("UTF-8");
+		//response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");//如果要返回HTML内容且要输出中文必须加上该语句，否则会乱码
 		PrintWriter pw=response.getWriter();
 		String name=request.getParameter("name");

@@ -21,7 +21,10 @@ public class HelloServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PrintWriter pw=resp.getWriter();//在整个Servlet中对于响应流的获取只能获取唯一的一次，即该代码只能使用一次
+		req.getSession();
+		resp.setContentType("text/html;charset=UTF-8");
 		pw.println("Hello Servlet");
+		pw.println("<a href='AnnoServlet.action'>跳转</a>");
 		pw.close();
 	}
 

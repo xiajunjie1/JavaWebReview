@@ -36,6 +36,7 @@ public class AnnonationServlet extends HttpServlet {
 		PrintWriter pw=resp.getWriter();
 		pw.println("<h2>基于注解的Servlet</h2>");
 		pw.close();
+		req.getSession().invalidate();//销毁Session
 		
 	}
 

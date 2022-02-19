@@ -41,15 +41,61 @@
     <servlet-name>HelloServlet</servlet-name>
     <url-pattern>/hello/*</url-pattern>
   </servlet-mapping>
-  
-  
   <servlet>
-  <servlet-name>InputServlet</servlet-name>
-  <servlet-class>com.maker.servlet.InputServlet</servlet-class>
+    <servlet-name>InputServlet</servlet-name>
+    <servlet-class>com.maker.servlet.InputServlet</servlet-class>
   </servlet>
-  
   <servlet-mapping>
-  <servlet-name>InputServlet</servlet-name>
-  <url-pattern>/input.action</url-pattern>
+    <servlet-name>InputServlet</servlet-name>
+    <url-pattern>/input.action</url-pattern>
   </servlet-mapping>
+  <filter>
+    <filter-name>BaseFilter</filter-name>
+    <filter-class>com.maker.filter.Filter_review</filter-class>
+    <init-param>
+      <param-name>title</param-name>
+      <param-value>Filter Test</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>BaseFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  
+  <filter>
+  <filter-name>EncodingFilter</filter-name>
+  <filter-class>com.maker.filter.Encoding_Filter</filter-class>
+  <init-param>
+  <param-name>charset</param-name>
+  <param-value>UTF-8</param-value>
+  </init-param>
+  </filter>
+  
+  <filter-mapping>
+  <filter-name>EncodingFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  
+  <filter>
+  <filter-name>LoginFilter</filter-name>
+  <filter-class>com.maker.filter.Login_Filter</filter-class>
+  <init-param>
+  <param-name>auth</param-name>
+  <param-value>uname</param-value>
+  </init-param>
+  </filter>
+  <filter-mapping>
+  <filter-name>LoginFilter</filter-name>
+  <url-pattern>/Login/*</url-pattern>
+  </filter-mapping>
+  
+ <listener>
+  <listener-class>com.maker.listener.Listener_review</listener-class>
+  </listener>
+ 
+  <listener>
+  <listener-class>com.maker.listener.Session_Listener</listener-class>
+  </listener>
 </web-app>
