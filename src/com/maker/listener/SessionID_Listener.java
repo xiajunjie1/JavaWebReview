@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSessionIdListener;
  * SessionID监听器
  * 	
  * */
-@WebListener
+//@WebListener
 public class SessionID_Listener implements HttpSessionIdListener {
 	/*
 	 * 每当SessionID修改之后都会触发该监听方法的执行

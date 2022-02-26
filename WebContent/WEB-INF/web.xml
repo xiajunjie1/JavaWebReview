@@ -29,6 +29,7 @@
     <error-code>500</error-code>
     <location>/ErrorPage.jsp</location>
   </error-page>
+<!--  
   <servlet>
     <servlet-name>HelloServlet</servlet-name>
     <servlet-class>com.maker.servlet.HelloServlet</servlet-class>
@@ -63,19 +64,7 @@
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
   
-  <filter>
-  <filter-name>EncodingFilter</filter-name>
-  <filter-class>com.maker.filter.Encoding_Filter</filter-class>
-  <init-param>
-  <param-name>charset</param-name>
-  <param-value>UTF-8</param-value>
-  </init-param>
-  </filter>
-  
-  <filter-mapping>
-  <filter-name>EncodingFilter</filter-name>
-  <url-pattern>/*</url-pattern>
-  </filter-mapping>
+ 
   
   
   <filter>
@@ -98,4 +87,25 @@
   <listener>
   <listener-class>com.maker.listener.Session_Listener</listener-class>
   </listener>
+  
+  -->
+   <filter>
+  <filter-name>EncodingFilter</filter-name>
+  <filter-class>com.maker.filter.Encoding_Filter</filter-class>
+  <init-param>
+  <param-name>charset</param-name>
+  <param-value>UTF-8</param-value>
+  </init-param>
+  </filter>
+  
+  <filter-mapping>
+  <filter-name>EncodingFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- 对配置在Context.xml中的数据库连接池资源进行引用 -->
+  <resource-ref>
+  <res-ref-name>jdbc/xia</res-ref-name>
+  <res-auth>Container</res-auth>
+  </resource-ref>
 </web-app>

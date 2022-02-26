@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebListener;
  * 	如果运行WEB项目，则一定要启动Tomcat，可能在Tomcat启动的时候进行一些重要的初始化操作
  * 	例如：每一个web容器会自动的设置一些application属性内容
  * */
-@WebListener
+//@WebListener
 public class ServletContext_Listener implements ServletContextListener {
 	/*
 	 * 上下文销毁时触发

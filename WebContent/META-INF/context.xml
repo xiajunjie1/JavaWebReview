@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+<!-- 
+JNDI是类似于map的结构，通过一个name去绑定相应的资源，如连接池就是绑定一个DataSource接口实例
+name:JNDI的名称
+auth="Container":描述当前资源交给容器管理
+maxActive="100":当前项目允许打开的最大数据库连接个数
+maxIdle="30"：当没有用户访问时，允许维持的最大的连接个数
+maxWait="1000":当没有连接时，最大等待时间1000ms
+
+在xml中，$需要转义为$amp;
+
+配置完成后需要在web.xml中引用该资源
+ -->
+ <Resource name="jdbc/xia" auth="Container" type="javax.sql.DataSource" 
+ maxActive="30" maxIdle="10" maxWait="1000" username="root" password="123456" 
+ driverClassName="com.mysql.cj.jdbc.Driver" url="jdbc:mysql://localhost:3306/mydb?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=UTC"/>
+</Context>

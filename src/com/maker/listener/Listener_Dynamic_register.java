@@ -19,7 +19,7 @@ import com.maker.servlet.Servlet_Dynamic;
 /**
  * 动态注册Servlet、Filter、Listener
  * */
-@WebListener
+//@WebListener
 public class Listener_Dynamic_register implements ServletContextListener {
 
 	@Override
