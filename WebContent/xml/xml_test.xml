@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 自定义标签 -->
+<contacts>
+<contact>
+	<name>骡智翔</name>
+	<phone>888</phone>
+	<address>长江底部</address>
+</contact>
+<contact>
+	<name>沉冠西</name>
+	<phone>111</phone>
+	<address>黄河底部</address>
+</contact>
+<contact>
+	<name>内摔摔</name>
+	<phone>120</phone>
+	<address>医院</address>
+</contact>
+</contacts>

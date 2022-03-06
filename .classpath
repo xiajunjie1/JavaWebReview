@@ -34,5 +34,8 @@
 	<classpathentry kind="lib" path="D:/java-jar/httpcomponents-client-5.1.3-bin/lib/reactive-streams-1.0.3.jar"/>
 	<classpathentry kind="lib" path="D:/java-jar/httpcomponents-client-5.1.3-bin/lib/rxjava-2.2.8.jar"/>
 	<classpathentry kind="lib" path="D:/java-jar/httpcomponents-client-5.1.3-bin/lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="D:/java-jar/commons-net-3.8.0-bin/commons-net-3.8.0/commons-net-3.8.0.jar" sourcepath="D:/java-jar/commons-net-3.8.0-bin/commons-net-3.8.0/commons-net-3.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="D:/java-jar/commons-net-3.8.0-bin/commons-net-3.8.0/commons-net-3.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="D:/java-jar/dom4j/dom4j-2.1.3.jar" sourcepath="D:/java-jar/dom4j/dom4j-2.1.3-sources.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
