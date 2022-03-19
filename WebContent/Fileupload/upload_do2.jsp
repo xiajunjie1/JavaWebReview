@@ -55,6 +55,7 @@ if(fileupload.isMultipartContent(request)){
 				if(fi.getSize()>0){
 					//文本选择框选中了文件
 					//获取文件的后缀
+					System.out.println(fi.getContentType());
 					String end=fi.getContentType().substring(fi.getContentType().lastIndexOf("/")+1);
 					//使用UUID工具类，实现自动命名的处理，防止名称重复
 					String filename=UUID.randomUUID()+"."+end;

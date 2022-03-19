@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DOM处理</title>
+<script type="text/javascript">
+window.onload=function(){
+document.getElementById("toright").addEventListener("click", function()
+	{
+	changeitem("spe","myable");
+	}, false);
+	
+document.getElementById("toleft").addEventListener("click", function()
+		{
+		changeitem("myable","spe");
+		}, false);
+		
+document.getElementById("spe").addEventListener("dblclick", function()
+		{
+		changeitem("spe","myable");
+		}, false);
+		
+document.getElementById("myable").addEventListener("dblclick", function()
+		{
+		changeitem("myable","spe");
+		}, false);
+}
+
+var changeitem=function(source,dest){
+	var sourceSelect=document.getElementById(source);
+	var destSelect=document.getElementById(dest);
+	var itemlist=sourceSelect.getElementsByTagName("option");
+	var optionlist=new Array();//用来保存需要移动的项目
+	var foot=0;//角标，标记有多少项被选中
+	for(x=0;x<itemlist.length;x++){
+		//if(itemlist.item(x).selected){
+			//optionlist[foot++]=itemlist.item(x);
+			
+		//}
+		if(itemlist[x].selected){
+			optionlist[foot++]=itemlist[x];
+		}
+		}
+	for(i=0;i<foot;i++){
+		sourceSelect.removeChild(optionlist[i]);
+		destSelect.appendChild(optionlist[i]);
+	}
+	
+	}
+
+</script>
+</head>
+<body>
+<!-- 利用js的dom处理，实现左右两个选择框内容的移动 -->
+<div>
+<select id="spe" multiple="multiple" size="8">
+	<option disabled="disabled">----请选择以擅长的技能----</option>
+	<option value="1">后端开发</option>
+	<option value="2">前端开发</option>
+	<option value="3">系统架构</option>
+	<option value="4">系统运维</option>
+	<option value="5">网络运维</option>
+</select>
+<button id="toright">&gt;&gt;</button>
+<button id="toleft">&lt;&lt;</button>
+<select id="myable" multiple="multiple" size="8">
+	<option disabled="disabled">----我擅长的技能----</option>
+
+</select>
+</div>
+</body>
+</html>

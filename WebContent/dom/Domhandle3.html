@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DOM操作</title>
+<script type="text/javascript">
+window.onload=function(){
+	document.getElementById("resetbtn").addEventListener("click", reset, false);
+	document.getElementById("addbtn").addEventListener("click", add, false);
+}
+/**
+ * 删除数据
+ */
+var del=function(id){
+	var tr=document.getElementById(id);
+	console.log(id);
+	console.log(tr);
+	var tbody=document.getElementById("deptbody");
+	tbody.removeChild(tr);
+}
+/**
+ * 新增一行数据
+ */
+var add=function(){
+	var deptno=document.getElementById("deptno");
+	var deptname=document.getElementById("deptname");
+	var deptloc=document.getElementById("deptloc");
+	//判断数据填写是否完整
+	if(deptno.value!="" && deptname.value!="" && deptloc.value!=""){
+	var tbody=document.getElementById("deptbody");
+	var tr=document.createElement("tr");
+	var tdno=document.createElement("td");
+	var tdname=document.createElement("td");
+	var tdloc=document.createElement("td");
+	var tddel=document.createElement("td");
+	tr.setAttribute("id", "dept-"+deptno.value);
+	tdno.appendChild(document.createTextNode(deptno.value));
+	tdname.appendChild(document.createTextNode(deptname.value));
+	tdloc.appendChild(document.createTextNode(deptloc.value));
+	var delbtn=document.createElement("button");
+	delbtn.addEventListener("click", function(){
+		del("dept-"+deptno.value);
+	}, false);
+	delbtn.appendChild(document.createTextNode("删除"));
+	tddel.appendChild(delbtn);
+	
+	tr.appendChild(tdno);
+	tr.appendChild(tdname);
+	tr.appendChild(tdloc);
+	tr.appendChild(tddel);
+	tbody.appendChild(tr);
+	}else{
+		alert("请完整输入部门信息");
+	}
+}
+
+
+
+var reset=function(){
+	document.getElementById("deptno").value="";
+	document.getElementById("deptname").value="";
+	document.getElementById("deptloc").value="";
+}
+</script>
+</head>
+<!-- 利用DOM动态操作表格 -->
+<body>
+部门编号：<input id="deptno" type="text" /><br/>
+部门名称：<input id="deptname" type="text"><br/>
+部门位置：<input id="deptloc" type="text"><br/>
+<button type="button" id="addbtn">添加</button>
+<button type="button" id="resetbtn">重置</button>
+<hr>
+<table id="deptab" border="1" width="700px">
+<thead>
+<tr>
+<td>部门编号</td>
+<td>部门名称</td>
+<td>部门位置</td>
+<td>部门删除</td>
+</tr>
+</thead>
+<tbody id="deptbody">
+
+</tbody>
+</table>
+
+</body>
+</html>

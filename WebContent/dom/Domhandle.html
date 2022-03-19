@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DOM操作</title>
+<script type="text/javascript">
+var ids =new Array(1,2,3,4,5);
+var cities=new Array("武汉","北京","上海","广州","深圳");
+window.onload=function(){
+	var btnobj=document.getElementById("fillbtn");
+	btnobj.addEventListener("click", function(){
+		var cityobj=document.getElementById("city");//获取到下拉列表
+		cityobj.length=1;//只保留一个元素，保留下来的ie标准，非标准的dom操作,作用是清空动态填充的数据
+		for(i=0;i<ids.length;i++){
+			var opt=document.createElement("option");
+			opt.setAttribute("value",ids[i]);
+			opt.appendChild(document.createTextNode(cities[i]));
+			cityobj.appendChild(opt);
+		}
+	}, false);
+	var clean=function(){
+		console.log("执行清除函数");
+		var cityobj=document.getElementById("city");
+		var citylist=cityobj.getElementsByTagName("option");
+		var len=citylist.length;
+		for(i=0;i<len-1;i++){
+			//不移除第一个占位值
+			cityobj.removeChild(citylist[1]);
+		}
+		
+	}
+	var cleanobj=document.getElementById("cleanbtn");
+	cleanobj.addEventListener("click", clean, false);
+	
+	
+	
+	
+}
+</script>
+</head>
+<body>
+<!-- 利用dom操作，动态的填充下拉列表 -->
+
+<select id="city">
+<option value="">---请选择你喜欢的城市---</option>
+
+</select>
+
+<button id="fillbtn" type="button">填充</button>
+<button id="cleanbtn" type="button">清空</button>
+</body>
+</html>

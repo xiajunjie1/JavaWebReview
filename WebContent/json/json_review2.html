@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>json操作</title>
+<script type="text/javascript" src="../js/json3.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	//js支持JSON对象
+	var jsondata={"empno":"1001","empname":"xiajunjie","dept":{"deptno":"11001","deptname":"综合办公室","loc":"武汉"}};
+	//通过“.”可以直接引用JSON的数据值
+	console.log("雇员号："+jsondata.empno+",雇员名称："+jsondata.empname);
+	console.log("部门号："+jsondata.dept.deptno+",部门名称："+jsondata.dept.deptname+",部门位置："+jsondata.dept.loc);
+
+	//在js中，甚至可以给JSON对象的值定义为函数
+	var jsondata2={add:function(x,y){
+		return x+y;
+	},"info":{
+		"name":"info function",
+		"url":"www.myinfo.com",
+		get:function(){
+			return this.name+"---"+this.url;
+		}
+	}}
+	//调用JSON中的function
+	console.log("计算结果："+jsondata2.add(10,20));
+	console.log("信息获取："+jsondata2.info.get());
+	
+	/*
+	在之前JS里面所定义的是一个JSON完整对象，但是在很多情况下，如果后台代码发送的是一个JSON的数据响应，
+	此时响应的内容一般都是文本数据，所以需要将这个文本数据转为JSON对象，而eval()函数就是这样的一个工作
+	
+	*/
+	
+	var jsonstr="[{\"deptname\":\"部门J\",\"deptno\":3001,\"loc\":\"武汉\"},{\"deptname\":\"部门Q\",\"deptno\":3101,\"loc\":\"香港\"},{\"deptname\":\"部门K\",\"deptno\":3201,\"loc\":\"东京\"}]";
+	var jsonarr=eval("("+jsonstr+")");//该函数将文本转成JSON，必须要加上()
+	for(i=0;i<jsonarr.length;i++){
+		console.log("部门号："+jsonarr[i].deptno+",部门名称："+jsonarr[i].deptname+",部门位置："+jsonarr[i].loc);
+	}
+	
+	/*
+	在整个js中只有eval这个转换函数，但是该函数有安全漏洞，它可以直接修改程序中的变量，从而造成安全隐患
+		JSON官方提供了JS工具专属包，下载地址为：https://bestiejs.github.io/json3/
+		
+	*/
+	//使用json3工具包
+	var num=10;
+	var myjson="{\"result\":num*num}";
+	var myjson2="{\"result\":10}";
+	//var myjsonobj=eval("("+myjson+")");//可以直接引用js中的变量进行计算
+	//myjsonobj=JSON.parse(myjson);//报错，不允许直接调用变量进行计算
+	var myjsonobj=JSON.parse(myjson2);
+	console.log("计算结果为："+myjsonobj.result);
+	
+	//通过JSON3工具包，将JSON对象转为文本
+	var myjsonobj2={
+			ename:"xia",age:26,loc:"wuhan"
+	}
+	var jsontext=JSON.stringify(myjsonobj2);//本次定义JSON，key上都没有加引号，被转成文本后，该工具会自动帮我们加上引号
+	console.log(jsontext);
+}
+</script>
+</head>
+<body>
+
+</body>
+</html>

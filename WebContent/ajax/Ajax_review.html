@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ajax复习</title>
+<script type="text/javascript">
+/*
+ * XMLHttpRequest：
+ 		onreadystatechange:指定当readState状态改变时调用，一般用于指定具体的回调函数
+ 		
+ 	在使用Ajax进行数据响应的时候，最为常见的两种响应数据
+ 		responseText：返回纯文本数据
+ 		responseXML:返回XML DOM对象
+ 		
+ 	在XMLHttpRequest类中最重要的一个属性readyState，该属性描述了不同的Ajax的数据处理状态，开发者根据不同的状态进行不同的处理操作
+ 		0：请求没有发出（在调用open()函数之前）
+ 		1：请求已经建立但还没有发出（在调用send()函数之前）
+ 		2：请求已经发出正在处理中（这里通常可以从相应得到内容头部）
+ 		3：请求已经处理，正在接收服务器的信息，响应中通常有部分数据可用，但是服务器还没有完成响应）
+ 		4：响应已完成，可以访问服务器响应并使用它
+ 	
+ 	该程序中在于要在同一个WEB容器内由Ajax进行请求的发送，如果是不同容器则需要进行跨域访问。
+ 	
+ 
+ */
+var xhr;
+
+window.onload=function(){
+	document.getElementById("send").addEventListener("click", function()
+		{
+		var param=document.getElementById("msg").value;
+		if(msg){
+			//参数有内容
+		xhr=new XMLHttpRequest();//获取ajax处理核心对象
+		xhr.open("post", "../echo.action");//建立请求
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		//回调处理，可以直接获取xhr的状态
+		xhr.onreadystatechange=function(){
+			//回调函数
+			document.getElementById("status").innerHTML+="<p>当前ajax的状态"+xhr.readyState+"</p>";
+			if(xhr.readyState==4 && xhr.status==200){
+				//响应完成且状态码为200正常
+				var msg=xhr.responseText;
+				document.getElementById("param").innerHTML="<p>参数为："+msg+"</p>";
+				
+			}
+		}
+		xhr.send("msg="+param);
+	}
+		
+	}, false);
+	}
+</script>
+</head>
+<body>
+<div id="control">
+<form action="#">
+<label>请输入参数信息</label><input type="text" name="msg" id="msg" style="width:200px" />
+<br/>
+<button id="send" type="button">获取参数信息</button>
+<button id="reset" type="reset">重置参数信息</button>
+</form>
+</div>
+<div id="param" style="background-color:#F2F2F2;width:300px;height:100px"></div>
+<p></p>
+<div id="status" style="background-color:#c9c9c9;width:300px;height:100px"></div>
+</body>
+</html>

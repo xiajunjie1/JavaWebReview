@@ -40,7 +40,15 @@ public class ParameterUtil {
  	private Map<String,String[]> paramap=new HashMap<>();//利用FileUpload组件获取表单参数，并将相应的参数和参数值保存在该map中，如果是文件，则先将文件存储到临时目录中，然后将临时文件的路径作为map值存储起来
  	private List<String> tempFilenames=new ArrayList<>();//保存临时文件名称，将来清空临时文件的时候使用
  	
- 	public ParameterUtil(HttpServletRequest request){
+ 	public List<String> getTempFilenames() {
+		return tempFilenames;
+	}
+
+	public void setTempFilenames(List<String> tempFilenames) {
+		this.tempFilenames = tempFilenames;
+	}
+
+	public ParameterUtil(HttpServletRequest request){
  		this(request,UPLOAD_DIR,TEMP_DIR,MAX_SIZE,FILE_MAX_SIZE,DEFAULT_ENCODING);
  	}
  	

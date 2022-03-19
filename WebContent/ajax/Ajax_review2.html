@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Html5对Ajax支持的新特性</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script type="text/javascript" src="../js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	document.getElementById("uname").addEventListener("blur", function(){
+		var xhr=new XMLHttpRequest();
+		
+		//h5对ajax的新特性支持
+		if(xhr.withCredentials){
+			alert("本浏览器不支持Ajax特性");
+		
+	}else{
+		xhr.open("post", "checkuser.action");
+		//一定要设置请求头信息，否则send的参数发不过去
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		//h5对ajax支持的新特性
+		xhr.onprogress=function(env){
+			//处理进度
+			//h5对dom处理的新支持
+			document.querySelector("#status").innerHTML+="<p>当前处理进度为："+(env.loaded / env.total)*100+"</p>";
+			
+		}
+		xhr.onload=function(env){
+			var echomsg=xhr.responseText;//获取响应数据
+			console.log(echomsg)
+			if(echomsg=="false"){
+				//document.querySelector("#hint").innerHTML="该用户名已存在无法使用";
+				document.querySelector("#hint").className="glyphicon glyphicon-remove";
+			}else{
+				//document.querySelector("#hint").innerHTML="该用户名可以使用";
+				document.querySelector("#hint").className="glyphicon glyphicon-ok";
+			}
+		}
+		xhr.send("uname="+document.querySelector("#uname").value);
+	}
+		
+	},false);
+}
+</script>
+</head>
+<body>
+<form action="checkuser.action">
+<label>请输入用户名：</label><input type="text" name="uname" id="uname"/><span id="hint"></span>
+
+<br/>
+<button type="submit" class="btn btn-primary">注册</button>
+<button type="reset" class="btn btn-warning">重置</button>
+<div id="status"></div>
+</form>
+</body>
+</html>

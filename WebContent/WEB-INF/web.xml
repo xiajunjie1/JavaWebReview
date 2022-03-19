@@ -29,83 +29,20 @@
     <error-code>500</error-code>
     <location>/ErrorPage.jsp</location>
   </error-page>
-<!--  
-  <servlet>
-    <servlet-name>HelloServlet</servlet-name>
-    <servlet-class>com.maker.servlet.HelloServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>HelloServlet</servlet-name>
-    <url-pattern>/hello.action</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>HelloServlet</servlet-name>
-    <url-pattern>/hello/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>InputServlet</servlet-name>
-    <servlet-class>com.maker.servlet.InputServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>InputServlet</servlet-name>
-    <url-pattern>/input.action</url-pattern>
-  </servlet-mapping>
   <filter>
-    <filter-name>BaseFilter</filter-name>
-    <filter-class>com.maker.filter.Filter_review</filter-class>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.maker.filter.Encoding_Filter</filter-class>
     <init-param>
-      <param-name>title</param-name>
-      <param-value>Filter Test</param-value>
+      <param-name>charset</param-name>
+      <param-value>UTF-8</param-value>
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>BaseFilter</filter-name>
+    <filter-name>EncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
-    <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-  
- 
-  
-  
-  <filter>
-  <filter-name>LoginFilter</filter-name>
-  <filter-class>com.maker.filter.Login_Filter</filter-class>
-  <init-param>
-  <param-name>auth</param-name>
-  <param-value>uname</param-value>
-  </init-param>
-  </filter>
-  <filter-mapping>
-  <filter-name>LoginFilter</filter-name>
-  <url-pattern>/Login/*</url-pattern>
-  </filter-mapping>
-  
- <listener>
-  <listener-class>com.maker.listener.Listener_review</listener-class>
-  </listener>
- 
-  <listener>
-  <listener-class>com.maker.listener.Session_Listener</listener-class>
-  </listener>
-  
-  -->
-   <filter>
-  <filter-name>EncodingFilter</filter-name>
-  <filter-class>com.maker.filter.Encoding_Filter</filter-class>
-  <init-param>
-  <param-name>charset</param-name>
-  <param-value>UTF-8</param-value>
-  </init-param>
-  </filter>
-  
-  <filter-mapping>
-  <filter-name>EncodingFilter</filter-name>
-  <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  
-  <!-- 对配置在Context.xml中的数据库连接池资源进行引用 -->
   <resource-ref>
-  <res-ref-name>jdbc/xia</res-ref-name>
-  <res-auth>Container</res-auth>
+    <res-ref-name>jdbc/xia</res-ref-name>
+    <res-auth>Container</res-auth>
   </resource-ref>
 </web-app>
