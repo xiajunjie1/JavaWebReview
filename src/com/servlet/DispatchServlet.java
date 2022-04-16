@@ -2,7 +2,10 @@ package com.servlet;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,7 +17,11 @@ import com.mvc.commons.annotation.RequestMapping;
 import com.mvc.commons.bean.ControllerRequestMapping;
 import com.mvc.commons.bean.DependencyObject;
 import com.mvc.commons.bean.ServletObject;
+import com.mvc.util.ActionUtil;
+import com.mvc.util.ParameterUtil;
+import com.mvc.util.ResourceBundleUtil;
 import com.mvc.util.scanner.ScannerPackageUtil;
+import com.mvc.util.validate.ValidationRuleUtil;
 import com.mvc.view.ModeAndView;
 
 /**
@@ -33,7 +40,15 @@ import com.mvc.view.ModeAndView;
  * 	匹配的结构解析类
  * */
 public class DispatchServlet extends HttpServlet {
-
+	public static final String DEFAULT_ERROR_PAGE="/errors.jsp";//公共错误页
+	private String validationBaseName;
+	private String errorPageBaseName;
+	private String messageBaseName;
+	private String errorpage;//错误页的地址
+	//【验证标记】true:未创建Validation.properties不需要验证，false:需要验证
+	private boolean validateFlag;
+	//【错误页标记】true：未创建ErrorPage.properties,未配置错误页，false：配置了错误页
+	private boolean errorPageFlag;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -44,7 +59,26 @@ public class DispatchServlet extends HttpServlet {
 		System.out.println("初始化："+basePackages);
 		//扫描包
 		ScannerPackageUtil.ScannerHandle(super.getClass(), basePackages);
-		
+		this.validationBaseName=super.getServletConfig().getInitParameter("validationBasename");
+		this.errorPageBaseName=super.getServletConfig().getInitParameter("errorPageBasename");
+		this.messageBaseName=super.getServletConfig().getInitParameter("messageBasename");
+		if(this.messageBaseName!=null){
+			//配置了消息资源
+			ResourceBundleUtil.setMessageBasename(this.messageBaseName);
+		}
+		this.validateFlag=this.validationBaseName==null || "".equals(this.validationBaseName);
+		this.errorPageFlag=this.errorPageBaseName==null || "".equals(this.errorPageBaseName);
+		if(this.errorPageFlag){
+			//没有配置具体的错误页
+			this.errorpage=this.DEFAULT_ERROR_PAGE;
+		}else{
+			try{
+				this.errorpage=ResourceBundle.getBundle(this.errorPageBaseName).getString("global.error.page");
+			}catch(Exception e){
+				this.errorpage=this.DEFAULT_ERROR_PAGE;
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -57,23 +91,74 @@ public class DispatchServlet extends HttpServlet {
 		//System.out.println(mapping);
 		ControllerRequestMapping rmapping=(ControllerRequestMapping) mapping.get(path);
 		try {
+			
 			ServletObject.setThreadRequest(req);
 			ServletObject.setThreadResponse(resp);
 			Object actionObj=rmapping.getActionClazz().getDeclaredConstructor().newInstance();//反射获取Action类对象
+			//通过解析到的action对象，获取上传路径，为实例化ParameterUtil做准备
+			String uploadpath=ActionUtil.getUpload(actionObj);
+			ParameterUtil pu=new ParameterUtil(req,uploadpath);
+			//将ParameterUtil对象存到ServletObject中，这样在项目中就可以随时调用此工具对象了
+			ServletObject.setParameterUtil(pu);
+			//配置验证
+			Map<String,String> errors=new HashMap<>();//保存错误信息
+		
+			if(!this.validateFlag){//创建了验证配置资源文件
+				String rule=null;
+				try{
+					 rule=ValidationRuleUtil.getValidateRule(this.validationBaseName, rmapping);
+				//System.out.println(rule);
+				}catch(Exception e){
+					System.err.println("未找到参数验证规则");
+				}
+				if(rule!=null){
+					//需要验证
+					errors=ValidationRuleUtil.getRule(rule);
+				}
+				
+			}
+			//System.out.println("【errors】--"+errors);
+			System.out.println(ServletObject.getParameterUtil().getAllUploadFile());
+		if(errors==null||errors.size()==0){//验证通过，没有错误正常执行
 			//传入控制层对象Action
 			DependencyObject depobj=new DependencyObject(actionObj);
 			//对action中的业务层对象进行注入
 			depobj.inject();
-			Object obj=rmapping.getActionMethod().invoke(actionObj);
+			//对匹配到的Action中的方法进行调用
+			Method targetMethod=rmapping.getActionMethod();
+			Object[] params=ActionUtil.getMethodParameterValue(actionObj, targetMethod);
+			Object obj=targetMethod.invoke(actionObj,params);
 			if(obj instanceof String){
 				req.getRequestDispatcher(obj.toString()).forward(req, resp);
 			}else if(obj instanceof ModeAndView){
 				ModeAndView mv=(ModeAndView)obj;
 				req.getRequestDispatcher(mv.getView()).forward(req, resp);
 			}
+			}else{//有错误信息
+				req.getSession().setAttribute("errmsg", errors);
+				if(!this.errorPageFlag){
+					//配置了错误页
+					String dispatchpath=null;
+					try{dispatchpath=ValidationRuleUtil.getErrorpath(this.errorPageBaseName, rmapping);}catch(Exception e)
+					{
+						System.err.println("找不到局部错误页");
+						dispatchpath=this.errorpage;
+					}
+					if(dispatchpath==null||"".equals(dispatchpath)){
+						dispatchpath=this.errorpage;
+					}
+					System.err.println("当前错误页为："+dispatchpath);
+					req.getRequestDispatcher(dispatchpath).forward(req, resp);
+				}else{
+					req.getRequestDispatcher(this.DEFAULT_ERROR_PAGE).forward(req, resp);
+				}
+				
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			ServletObject.clean();
 		} 
 		
 		

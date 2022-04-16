@@ -32,6 +32,25 @@
   <servlet>
   <servlet-name>DispatcherServlet</servlet-name>
   <servlet-class>com.servlet.DispatchServlet</servlet-class>
+  <init-param>
+  <!-- 验证规则配置文件的完整名称 -->
+  <param-name>validationBasename</param-name>
+  <param-value>com/mvc/resource/Validation</param-value>
+  </init-param>
+    <init-param>
+  <!-- 错误页配置文件的完整名称 -->
+  <param-name>errorPageBasename</param-name>
+  <param-value>com/mvc/resource/ErrorPage</param-value>
+  </init-param>
+    <init-param>
+  <!-- 错误信息配置文件完整名称 -->
+  <param-name>messageBasename</param-name>
+  <param-value>com/mvc/resource/Message</param-value>
+  </init-param>
+  <init-param>
+  <param-name>500</param-name>
+  <param-value>/pages/error/httpcode-500.jsp</param-value>
+  </init-param>
   </servlet>
   <servlet-mapping>
   <servlet-name>DispatcherServlet</servlet-name>
