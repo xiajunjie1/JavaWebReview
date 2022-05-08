@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<!-- 配置bean -->
+<!-- 通过该方式配置，需要保证该类中有无参构造 -->
+<!-- 
+	scope:
+		指对象的作用范围，取值如下：
+			singleton：单例（默认值）
+			prototype：多例
+			request：WEB项目中，Spring创建一个Bean的对象，将对象存入到request域中
+			session：WEB项目中，Spring创建一个Bean对象，将对象存入到Session域中
+			global session：WEB项目中，应用在Portlet环境，如果没有portlet环境，那么该作用范围与session相当
+			
+
+ -->
+<bean id="springbean" class="com.maker.bean.SpringBean" scope="prototype">
+
+</bean>
+
+<!-- 
+	init-method:指定初始化方法
+	destroy-method:指定销毁方法
+
+ -->
+<bean id="springbean2" class="com.maker.bean.SpringBeanCopy" init-method="SpringInit" destroy-method="SpringDestroy"></bean>
+
+<bean id="springbean3" class="com.maker.bean.SpringBeanCopy">
+	<!-- 通过setter注入引用类型数据，name后为setXxx中的xxx，ref后为在配置文件中，配好的bean的id -->
+	<property name="sbean" ref="springbean"></property>
+	<!-- 通过setter注入基本数据类型 -->
+	<property name="addr" value="wuhan"></property>
+	<!-- 通过有参构造注入基本类型,name后为参数名 -->
+	<constructor-arg name="name" value="xia">
+	</constructor-arg>
+	<constructor-arg name="age" value="22"></constructor-arg>
+	<!-- 通过setter注入集合 -->
+	<property name="slist">
+	<list>
+	<value>v1</value>
+	<value>v2</value>
+	</list>
+	</property>
+	
+	<property name="smap">
+	<map>
+	<entry key="b1" value-ref="springbean"></entry>
+	<entry key="b2" value-ref="springbean"></entry>
+	</map>
+	</property>
+	
+	<property name="prop">
+	<props>
+	<prop key="p1">value1</prop>
+	<prop key="p2">value2</prop>
+	</props>
+	</property>
+</bean>
+<!-- 引入外部Spring配置文件 -->
+<import resource="applicationContext2.xml"/>
+
+<!-- 配置数据源 -->
+<bean id="datasource_c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<property name="driverClass" value="com.mysql.cj.jdbc.Driver"></property>
+	<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mydb?character=utf8&amp;useSSL=false&amp;ServerTimezone=UTC"></property>
+	<property name="user" value="root"></property>
+	<property name="password" value="123456"></property>
+</bean>
+
+<!-- 在xml文件中加载properties文件，从而配置数据源 
+	xml配置文件需要加载properties配置文件，需要引入context命名空间
+	xmlns:context="http://www.springframework.org/schema/context"
+	并且引入context的约束路径
+	 http://www.springframework.org/schema/context
+     https://www.springframework.org/schema/context/spring-context-4.3.xsd
+-->
+<!-- 导入外部properties文件 -->
+<context:property-placeholder location="classpath:jdbc.properties"/>
+<bean id="datasource_druid" class="com.alibaba.druid.pool.DruidDataSource">
+	<property name="driverClassName" value="${jdbc.Driver}"></property>
+	<property name="url" value="${jdbc.Url}"></property>
+	<property name="username" value="${jdbc.Username}"></property>
+	<property name="password" value="${jdbc.Password}"></property>
+</bean>
+</beans>
+
