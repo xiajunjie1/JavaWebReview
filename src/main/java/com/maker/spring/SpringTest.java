@@ -3,6 +3,8 @@ package com.maker.spring;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.maker.UserManger.dao.RoleDao;
+import com.maker.UserManger.service.RoleService;
 import com.maker.bean.SpringBean;
 
 /**
@@ -83,5 +85,9 @@ public class SpringTest {
 		ApplicationContext app=new ClassPathXmlApplicationContext("applicationContext.xml");
 		SpringBean bean=(SpringBean) app.getBean("springbean");
 		System.out.println(bean.getInfo());
+		RoleDao rdao=(RoleDao) app.getBean("role_dao");
+		RoleService rservice=(RoleService)app.getBean("role_service");
+		System.out.println(rdao);
+		System.out.println(rservice);
 	}
 }

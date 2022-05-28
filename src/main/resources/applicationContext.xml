@@ -87,5 +87,29 @@
 	<property name="username" value="${jdbc.Username}"></property>
 	<property name="password" value="${jdbc.Password}"></property>
 </bean>
+
+<bean id="jtemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="datasource_druid"></property>
+</bean>
+
+<bean id="role_dao" class="com.maker.UserManger.dao.impl.RoleDaoImp">
+<property name="jtemplate" ref="jtemplate"></property>
+</bean>
+<bean id="role_service" class="com.maker.UserManger.service.impl.RoleServiceImp">
+	<property name="rdao" ref="role_dao"></property>
+</bean>
+
+<bean id="user_dao" class="com.maker.UserManger.dao.impl.UserDaoImp">
+<property name="jtemplate" ref="jtemplate"></property>
+</bean>
+
+<bean id="user_service" class="com.maker.UserManger.service.impl.UserServiceImp">
+	<property name="udao" ref="user_dao"></property>
+	<property name="rdao" ref="role_dao"></property>
+</bean>
+
+<!-- 配置组件扫描（注解配置） -->
+<context:component-scan base-package="com.maker" />
+
 </beans>
 

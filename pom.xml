@@ -3,6 +3,7 @@
   <groupId>com.jay.maven</groupId>
   <artifactId>SpringTest</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
   <packaging>war</packaging>
   <properties>
   	<spring-version>5.0.5.RELEASE</spring-version>
@@ -18,8 +19,8 @@
   	<dependency>
   	<groupId>junit</groupId>
   	<artifactId>junit</artifactId>
-  	<version>4.9</version>
-  	<scope>test</scope>
+  	<version>4.12</version>
+  	<scope>compile</scope>
   	</dependency>
   	
   	<dependency>
@@ -39,8 +40,97 @@
     <artifactId>druid</artifactId>
     <version>1.2.8</version>
 </dependency>
+
+<!-- Spring集成Junit需要导入以下包 -->
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-test</artifactId>
+ <version>${spring-version}</version>
+ <scope>compile</scope>
+</dependency>
+
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-web</artifactId>
+ <version>${spring-version}</version>
+ <scope>compile</scope>
+</dependency>
+
+
+<dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>javax.servlet-api</artifactId>
+	<version>3.1.0</version>
+	<scope>provided</scope>
+</dependency>
+
+<dependency>
+    <groupId>javax.servlet.jsp</groupId>
+    <artifactId>javax.servlet.jsp-api</artifactId>
+    <version>2.3.1</version>
+    <scope>provided</scope>
+</dependency>
+
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-webmvc</artifactId>
+<version>${spring-version}</version>
+</dependency>
+
+
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.13.1</version>
+</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.13.1</version>
+</dependency>
+
+<dependency>
+	<groupId>commons-fileupload</groupId>
+	<artifactId>commons-fileupload</artifactId>
+	<version>1.4</version>
+</dependency>
+
+<dependency>
+	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>2.11.0</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-jdbc</artifactId>
+	<version>${spring-version}</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-tx</artifactId>
+	<version>${spring-version}</version>
+</dependency>
   	
   </dependencies>
+  <!-- 
+  	该项目执行Maven Install的时候，会报错。
+  	因为maven的web项目默认的webroot是在src\main\webapp。如果在此目录下找不到web.xml就抛出以上的异常
+  	所以在此处配置web.xml文件的位置，让Maven可以识别到
+   -->
+  <build>
+  	<plugins>
+  		<plugin>
+  		<groupId>org.apache.maven.plugins</groupId>
+  		<artifactId>maven-war-plugin</artifactId>
+  		<version>2.1.1</version>
+  		<configuration>
+  			<webXml>WebContent\WEB-Inf\web.xml</webXml>
+  		</configuration>
+  		</plugin>
+  	</plugins>
+  </build>
   
 </project>
 
