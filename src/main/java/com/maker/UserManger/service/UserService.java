@@ -10,4 +10,5 @@ public interface UserService {
 	public List<User> listuser();
 	public boolean saveUser(User user,Integer[] rids);
 	public boolean delUser(Long id);
+	public User Login(String username,String password);
 }

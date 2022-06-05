@@ -2,10 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        https://www.springframework.org/schema/context/spring-context-4.3.xsd">
+        https://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 <!-- 配置bean -->
 <!-- 通过该方式配置，需要保证该类中有无参构造 -->
 <!-- 
@@ -111,5 +114,25 @@
 <!-- 配置组件扫描（注解配置） -->
 <context:component-scan base-package="com.maker" />
 
+<!-- AOP相关配置 -->
+<!-- 配置目标类 -->
+<bean id="TestService" class="com.maker.aop.TestService"></bean>
+<!-- 配置增强类 -->
+<bean id="MyAspect" class="com.maker.aop.MyAspect"></bean>
+<!-- 配置织入 -->
+<aop:config>
+	<!-- 配置切点表达式的抽取 -->
+	<aop:pointcut expression="execution(* com.maker.aop.TestService.*(..))" id="myexp1"/>
+	<!-- 配置切面 -->
+	<aop:aspect ref="MyAspect">
+		<!-- 配置前置增强，method中填入增强的方法 ，pointcut中填写需要增强的目标方法-->
+		<aop:before method="before" pointcut="execution(public void com.maker.aop.TestService.save())"/>
+		
+		<aop:after-returning method="afterReturning" pointcut-ref="myexp1"/>
+		<aop:around method="round" pointcut-ref="myexp1"/>
+		<aop:after-throwing method="afterThrow" pointcut-ref="myexp1"/>
+		<aop:after method="after" pointcut-ref="myexp1"/>
+	</aop:aspect>
+</aop:config>
 </beans>
 

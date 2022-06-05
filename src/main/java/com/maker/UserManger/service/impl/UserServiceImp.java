@@ -93,5 +93,21 @@ public class UserServiceImp implements UserService {
 	}
 
 
+	@Override
+	public User Login(String username, String password) {
+		User user=null;
+		if(username==null || "".equals(username)){
+			return user;
+		}
+		try {
+			user=this.udao.findByUnameAndPwd(username, password);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+
 
 }

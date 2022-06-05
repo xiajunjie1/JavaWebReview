@@ -12,7 +12,7 @@ import com.maker.UserManger.domain.Role;
 import com.maker.UserManger.service.RoleService;
 
 @Controller
-@RequestMapping("role")
+@RequestMapping("/role/")
 public class RoleController {
 	@Autowired
 	@Qualifier("role_service")

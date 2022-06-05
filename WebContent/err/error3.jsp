@@ -9,9 +9,9 @@
 <script type="text/javascript" src="<%=path%>/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="<%=path%>/js/bootstrap.min.js"></script>
 
-<title>索引页</title>
+<title>自定义异常</title>
 </head>
 <body>
-<%response.sendRedirect(path+"/pages/index"); %>
+	<h1>自定义异常页</h1>
 </body>
 </html>

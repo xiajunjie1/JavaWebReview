@@ -2,6 +2,8 @@ package com.maker.UserManger.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -57,5 +59,27 @@ public class UserController {
 			return "redirect:/user/listuser";
 		}
 		return "/pages/uerr";
+	}
+	/**
+	 * 登录处理方法
+	 * */
+	@RequestMapping("login")
+	public ModelAndView Login(String username,String password,HttpSession session){
+		ModelAndView mav=new ModelAndView();
+		if(username==null||"".equals(username)){
+			mav.setViewName("pages/login");
+			mav.addObject("errmsg","用户名不合规");
+		}else{
+			User user=this.uservice.Login(username, password);
+			if(user==null){
+				mav.setViewName("/pages/login");
+				mav.addObject("errmsg","用户名或密码错误");
+			}
+			else{
+				session.setAttribute("user", user);
+				mav.setViewName("redirect:/pages/index");
+			}
+		}
+		return mav;
 	}
 }

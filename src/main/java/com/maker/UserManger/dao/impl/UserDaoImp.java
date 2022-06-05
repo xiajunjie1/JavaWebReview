@@ -123,4 +123,12 @@ public class UserDaoImp implements UserDao {
 		return row;
 	}
 
+	@Override
+	public User findByUnameAndPwd(String username, String password) throws Exception {
+		// TODO Auto-generated method stub
+		String sql="Select * from sys_user where username=? and password=?";
+		User user=this.jtemplate.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class),username,password);
+		return user;
+	}
+
 }

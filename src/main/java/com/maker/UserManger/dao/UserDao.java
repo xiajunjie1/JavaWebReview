@@ -11,4 +11,6 @@ public interface UserDao extends IbaseDao<Long, User> {
 	public Long doCreateGetId(User user)throws Exception;
 	
 	public int doCreateuser_role(Long uid,Integer rid)throws Exception;
+	
+	public User findByUnameAndPwd(String username,String password)throws Exception;
 }

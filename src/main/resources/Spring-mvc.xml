@@ -58,5 +58,42 @@
 	<property name="defaultEncoding" value="UTF-8"></property>
 </bean>
 
+<!-- 配置拦截器 -->
+<mvc:interceptors>
+
+		
+	
+		<mvc:interceptor>
+			<mvc:mapping path="/user/**"/>
+			<!-- 对登录请求放行 -->
+			<mvc:exclude-mapping path="/user/login"/>
+			<bean class="com.maker.interceptor.LoginInterceptor" ></bean>
+	</mvc:interceptor>
+	
+			<mvc:interceptor>
+			<mvc:mapping path="/role/**"/>
+			<bean class="com.maker.interceptor.LoginInterceptor" ></bean>
+	</mvc:interceptor>
+	
+			<mvc:interceptor>
+			<mvc:mapping path="/pages/**"/>
+			<bean class="com.maker.interceptor.LoginInterceptor" ></bean>
+	</mvc:interceptor>
+</mvc:interceptors>
+
+<!-- 配置简单异常处理器 -->
+<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	<!-- 默认错误视图 -->
+	<property name="defaultErrorView" value="err/error"></property>
+	<!-- 配置不同的异常类型对应的错误视图 -->
+	<property name="exceptionMappings">
+		<map>
+			<entry key="java.lang.NullPointerException" value="err/error1"></entry>
+			<entry key="java.lang.NumberFormatException" value="err/error2"></entry>
+			<entry key="com.maker.exception.myException" value="err/error3"></entry>
+		</map>
+	</property>
+</bean>
+
 </beans>
 

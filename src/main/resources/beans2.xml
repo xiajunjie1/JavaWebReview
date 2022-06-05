@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<bean id="datasource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="${jdbc.Driver}"></property>
+		<property name="url" value="${jdbc.Url}"></property>
+		<property name="username" value="${jdbc.Username}"></property>
+		<property name="password" value="${jdbc.Password}"></property>
+	</bean>
+	
+	<bean id="jtemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="datasource"></property>
+	</bean>
+	
+	<bean id="accountdao" class="com.maker.dao.impl.AccountDaoImp">
+		<property name="Jtemplate" ref="jtemplate"></property>
+	</bean>
+	
+	<bean id="accountservice" class="com.maker.service.impl.AccountServiceImp">
+		<property name="dao" ref="accountdao"></property>
+	</bean>
+	<!-- 配置事务管理器
+		Spring的事务控制也是基于AOP来实现的，也就是说，目前切点是Service对象
+	 -->
+	<bean id="PlantformTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 事务的控制需要用到Connection对象，Connection对象需要从
+			DataSource中获取
+		 -->
+		<property name="dataSource" ref="datasource"></property>
+	</bean>
+	<!-- 配置增强 -->
+	<tx:advice id="txadvice" transaction-manager="PlantformTransactionManager">
+		<!-- 事务属性配置 -->
+		<tx:attributes>
+			<!-- 
+				哪些方法被增强，可以根据不同的切点（方法），设置不同的增强方式
+				配*代表所有的方式都以下面的属性进行增强,如果后面的属性（隔离级别，传播行为等等）与默认的一致也可以不写
+			 -->
+			<!--  
+			<tx:method name="*" isolation="DEFAULT" propagation="REQUIRED" read-only="false"/>
+			-->
+			
+			<!-- 根据不同的方法配置不同的事务属性操作 -->
+			<tx:method name="transfer" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="findall" isolation="DEFAULT" propagation="REQUIRED" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 配置aop的事务织入 -->
+	<aop:config>
+		<aop:advisor advice-ref="txadvice" pointcut="execution(* com.maker.service.impl..*.*(..))"/>
+	</aop:config>
+	
+	
+	<!-- 基于注解的方式进行事务管理，需要用到下面的配置 -->
+	<!--  
+	<tx:annotation-driven transaction-manager="PlantformTransactionManager"/>
+	-->
+</beans>
+
