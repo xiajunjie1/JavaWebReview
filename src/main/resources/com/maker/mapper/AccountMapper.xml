@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 根标签mapper
+  		属性：namespace,与下面字标签的id组成查询的标识
+   -->
+ <mapper namespace="accountMapper">
+ 	<!-- 调用该语句时是使用accountMapper.findall的形式来进行调用
+ 		resultType代表该条语句执行的结果，封装成什么对象
+ 		已经在核心配置文件中配置了别名
+ 	 -->
+ 	<select id="findall" resultType="account">
+ 		<!-- sql语句，也可以写占位符#{属性名} -->
+ 		Select * from account
+ 	</select>
+ 	
+ 	<!-- 插入操作 
+ 			传入参数为Account实体
+ 	-->
+ 	<insert id="add" parameterType="com.maker.domain.Account">
+ 		<!-- 占位符，里面的内容为实体对象的属性名（并不是表属性） -->
+ 		Insert into  account Values(#{name},#{money})
+ 	</insert>
+ 	
+ 	
+ 	<!-- 修改操作
+ 			传入参数为Account实体
+ 	 -->
+ 	 <update id="update" parameterType="com.maker.domain.Account">
+ 	 	update account set money=#{money} where name=#{name}
+ 	 </update>
+ 	 
+ 	 <!-- 删除操作
+ 	 		如果有多个条件可以传入实体类对象，如果只用一个条件删除，可以传入基本类型包装类
+ 	  -->
+ 	  <delete id="delete" parameterType="java.lang.String">
+ 	  		delete from account where name=#{name}
+ 	  </delete>
+ </mapper>
+ 
+ 
+ 

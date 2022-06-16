@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 命名空间要和dao接口的全限定名一致 -->
+  <mapper namespace="com.maker.dao.UserMapper">
+	<insert id="save" parameterType="com.maker.domain.User">
+		insert into user values(#{id},#{name},#{password},#{birthday})
+	</insert>
+	
+	<select id="findAll" resultType="com.maker.domain.User">
+		select * from user
+	</select>
+	
+	<select id="findById" resultType="int">
+		select * from user where id=#{id}
+	</select>
+	
+	<!-- 进行一对多查询的配置 -->
+	<resultMap type="com.maker.domain.User" id="userMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+		<!-- 配置“多”，Order集合
+			property为该resultMap对应的实体类中的集合属性名称
+			ofType为该集合中存储的对象的类型，即Order类
+		 -->
+		<collection property="orders" ofType="com.maker.domain.Order">
+			<id column="oid" property="oid"/>
+			<result column="ordertime" property="ordertime"/>
+			<result column="total" property="total"/>
+		</collection>
+	</resultMap>
+	<select id="findAll2" resultMap="userMap">
+		Select * from user,orders where user.id=orders.uid
+	</select>
+  </mapper>

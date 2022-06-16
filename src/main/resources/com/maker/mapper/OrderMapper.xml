@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.maker.dao.OrderMapper">
+  <!-- 封装一个resultMap -->
+  <resultMap type="com.maker.domain.Order" id="orders">
+  	<!-- 主键可以用id标签来封装 
+  		column是数据库表查询出来的结果集的列名称
+  		property是实体类的属性名
+  	-->
+  	<id column="oid" property="oid"/>
+  	<result column="ordertime" property="ordertime"/>
+  	<result column="total" property="total"/>
+  	<!-- 实体类属性的封装，也可用association标签来代替 -->
+  	<!--  <result column="uid" property="user.id"/>
+  	<result column="name" property="user.name"/>
+  	<result column="password" property="user.password"/>
+  	-->
+  	<!-- 第一个property代表在该resultMap指定的类型，Order中的属性名称
+  		javaType表示该属性的Java类型
+  	 -->
+  	<association property="user" javaType="com.maker.domain.User">
+  		<id column="uid" property="id"/>
+  		<result column="name" property="name"/>
+  		<result column="password" property="password"/>
+  	</association>
+  </resultMap>
+  	<select id="findAll" resultMap="orders">
+  		Select * from orders,user where uid=id
+  	</select>
+  </mapper>

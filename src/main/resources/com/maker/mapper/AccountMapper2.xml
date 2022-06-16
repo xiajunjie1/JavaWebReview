@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 命名空间要和dao接口的全限定名一致 -->
+  <mapper namespace="com.maker.dao.AccountMapper">
+  	<!-- id要和接口中对应的方法名一致
+  		resultType要和方法的返回值类型一致
+  	 -->
+  	<select id="getAll" resultType="com.maker.domain.Account">
+  		Select * from account
+  	</select>
+  	
+  	<select id="getOne" parameterType="string" resultType="com.maker.domain.Account">
+  		Select * from account where name=#{name}
+  	</select>
+  	
+  	<!-- sql语句的抽取 -->
+  	<sql id="select_account">
+  		Select * from account
+  	</sql>
+  	
+  	<select id="getCondition" parameterType="account" resultType="account">
+  		Select * from account 
+  		<!-- 如果name和money都不为空，那么等价于
+  				Select * from account where 1=1 and name=#{name} and money>#{money}
+  		 	如果name和money中，name为空，那么等价于
+  		 		Select * from account where 1=1 and money>#{money}
+  		 	如果name和money中，money为空，那么等价于
+  		 		Select * from account where 1=1 and name=#{name} 
+  		 -->
+  			<where>
+  				<!-- if中的name，money是传入参数对象的属性名称 -->
+  				<if test="name!=null">
+  					and name=#{name}
+  				</if>
+  				<if test="money!=null">
+  					and money>#{money}
+  				</if>
+  			</where>
+  	</select>
+  	
+  	<select id="getConditionByNames" parameterType="java.util.List" resultType="account">
+  		<!-- 等价于
+  				Select * from account where name in (xxx,yyy,zzz,...)
+  			 -->
+  		<include refid="select_account"></include>
+  		<where>
+  			<!-- collection: 要做foreach的对象，作为入参时，List对象默认用"list"代替作为键；
+  			数组对象有"array"代替作为键；
+  			Map对象没有默认的键。
+  			当然在作为入参时可以使用@Param("keyName")来设置键，设置keyName后，list和array将会失效。
+  			除了入参这种情况外，还有一种作为参数对象的某个字段的时候。举个例子：如果User有属性List ids。入参是User对象，那么这个collection = "ids"。
+  			如果User有属性Ids ids;其中Ids是个对象，Ids有个属性List id；入参是User对象，那么collection = "ids.id"
+
+-->
+  			<foreach collection="list" open="name in(" close=")" separator="," item="name">
+  				#{name}
+  			</foreach>
+  		</where>
+  	</select>
+  	
+  	
+  </mapper>

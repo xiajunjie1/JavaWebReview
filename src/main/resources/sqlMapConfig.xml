@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+        
+ <!-- mybatis核心配置文件 
+ 	configuration为根标签
+ -->
+<configuration>
+<!-- properties标签
+		该标签可以加载额外的Properties文件
+ -->
+<properties resource="jdbc.properties"></properties>
+
+<!-- 定义别名，定义之后，在mapper映射文件中就可以使用别名而不用写全名
+		注意：该定义必须写在Mappers标签的前面
+ -->
+<typeAliases>
+	<typeAlias type="com.maker.domain.Account" alias="account"/>
+	<typeAlias type="java.lang.String" alias="string"/>
+	
+</typeAliases>
+<!-- 注册类型处理器 -->
+<!--  
+<typeHandlers>
+	<typeHandler handler="com.maker.handler.DateTypeHandler"/>
+</typeHandlers>
+-->
+<!-- 配置分页助手插件 -->
+<plugins>
+	<plugin interceptor="com.github.pagehelper.PageHelper">
+		<!-- 配置属性dialect（方言），不同的数据库可能分页的方式不同，mysql使用的limit -->
+		<property name="dialect" value="mysql"/>
+	</plugin>
+</plugins>
+
+
+<!-- 
+environments子标签
+配置数据源环境
+支持多环境配置，可以指定默认的环境，default就是指定默认环境的属性
+ -->
+<environments default="test">
+	<!-- 配置一个具体的环境 -->
+	<environment id="test">
+	<!-- 配置事务管理器，采用JDBC的事务管理器 
+			事务管理器的类型有两种：
+				JDBC
+				MANAGED：这个配置几乎没做什么。它从来不提交或回滚一个连接，而是让容器来管理事务的整个生命周期。
+						默认情况下它会关闭连接，然而一些容器并不希望这样，因此需要将closeConnection属性设为false来阻止它默认的关闭行为
+				
+	-->
+	<transactionManager type="JDBC"></transactionManager>
+	<!-- 配置数据源
+			DataSource有三种类型：
+				UNPOOLED：这个数据源的实现只是每次被请求时打开和关闭连接
+				POOLED：这种数据源的实现利用“池”的概念将JDBC连接对象组织起来
+				JNDI：这个数据源的实现是为了能在EJB或应用服务器这类容器中使用，容器可以集中或在外部配置数据源，然后放置在一个JNDI上下文的引用
+				
+	 -->
+	<dataSource type="POOLED">
+		<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/mydb?character=utf8&amp;useSSL=false&amp;ServerTimezone=UTC"/>
+		<property name="username" value="root"/>
+		<property name="password" value="123456"/>
+	</dataSource>
+	</environment>
+</environments>
+
+<!-- 加载sql映射文件 -->
+<mappers>
+<!-- 该标签的作用是加载映射映射文件，它有如下的映射方式
+		使用相对于类路径的资源引用，例如：<mapper resource="com/maker/mapper/AccountMapper.xml"/>
+		使用完全限定资源定位符（URL），例如：<mapper url="file:///var/mappers/AccountMapperx.xml"/>
+		使用映射器接口实现类的完全限定类名，例如：<mapper class="com.maker.mapper.AccountMapper" />
+		将包内的映射器接口实现全部注册为映射器，例如：<package name="com.maker.mapper"/>
+ -->
+<mapper resource="com/maker/mapper/AccountMapper.xml"/>
+<mapper resource="com/maker/mapper/AccountMapper2.xml"/>
+<mapper resource="com/maker/mapper/UserMapper.xml"/>
+<mapper resource="com/maker/mapper/DeptMapper.xml"/>
+<mapper resource="com/maker/mapper/OrderMapper.xml"/>
+<mapper resource="com/maker/mapper/SysUserMapper.xml"/>
+</mappers>
+</configuration>
+        
