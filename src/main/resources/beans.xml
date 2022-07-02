@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+         http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+              <context:component-scan base-package="com.maker"></context:component-scan>
+              <context:property-placeholder location="classpath:jdbc.properties"/>
+       <!-- 配置数据源，为整合mybatis做准备 -->
+       <bean id="dataSource_druid" class="com.alibaba.druid.pool.DruidDataSource">
+       <property name="driverClassName" value="${jdbc.Driver}"></property>
+		<property name="url" value="${jdbc.Url}"></property>
+		<property name="username" value="${jdbc.Username}"></property>
+		<property name="password" value="${jdbc.Password}"></property>
+       </bean>
+       
+       <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+       		<property name="dataSource" ref="dataSource_druid"></property>
+       		<!--  
+       			配置Mybatis Mapper所对应的XML配置文件的位置，如果在Mapper中有自定义的方法（XML中有自定义的实现），需要进行该配置
+       		<property name="mapperLocations" value="classpath:com/maker/mapper/*.xml"></property>
+       			
+       		-->
+       		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
+       </bean>
+        
+        <bean id="scanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.maker.mapper"/>
+        </bean>
+        </beans>

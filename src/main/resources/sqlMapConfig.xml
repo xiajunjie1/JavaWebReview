@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="jdbc.properties"></properties>
+	<!-- mybatis分页插件设置 -->
+	<plugins>
+		<plugin interceptor="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+			 <property name="@page" value="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor"/>
+			 <property name="page:dbType" value="h2"/>
+		</plugin>
+	</plugins>
+<!--  
+	环境的配置已经移到Spring的配置文件中进行配置了
+	<environments default="devlop">
+		<environment id="devlop">
+		<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+		<property name="driver" value="${jdbc.Driver}"/>
+		<property name="url" value="${jdbc.Url}"/>
+		<property name="username" value="${jdbc.Username}"/>
+		<property name="password" value="${jdbc.Password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	-->
+	
+</configuration>
