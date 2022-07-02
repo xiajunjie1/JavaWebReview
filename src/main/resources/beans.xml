@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+         http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+       
+       <!-- 组件扫描，扫描dao层和service层 -->
+       <context:component-scan base-package="com.maker">
+       	<!-- 排除controller的扫描，由SpringMVC管理 -->
+       	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+       </context:component-scan>
+              <context:property-placeholder location="classpath:jdbc.properties"/>
+       <!-- 配置数据源，为整合mybatis做准备 -->
+       <bean id="dataSource_druid" class="com.alibaba.druid.pool.DruidDataSource">
+       <property name="driverClassName" value="${jdbc.Driver}"></property>
+		<property name="url" value="${jdbc.Url}"></property>
+		<property name="username" value="${jdbc.Username}"></property>
+		<property name="password" value="${jdbc.Password}"></property>
+       </bean>
+       <!-- 配置mybatis的session工厂
+       		该类是由mybatis-spring提供的一个工厂实现类
+        -->
+      <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       		<property name="dataSource" ref="dataSource_druid"></property>
+       		<!-- 加载mybatis的核心文件 -->
+       		<property name="configLocation" value="classpath:spring-mybatis.xml"></property>
+       </bean>
+       
+       <!-- 扫描mapper包，为相应的mapper接口创建代理实现类 -->
+        <bean id="scanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+       	<!-- 指定扫描哪个包 -->
+         <property name="basePackage" value="com.maker.dao"></property>
+       </bean>
+
+	<!-- 配置声明式事务控制 -->
+	<!-- 平台事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_druid"></property>
+	</bean>
+	
+	<!-- 配置事务增强 -->
+	<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 事务的aop织入 -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.maker.service.impl.*.*(..))"/>
+	</aop:config>
+        </beans>

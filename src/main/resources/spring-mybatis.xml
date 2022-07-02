@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+ 
+ <!-- 配置别名 -->
+ <typeAliases>
+ 	<!-- 扫包，自动生成别名 -->
+ 	<package name="com.maker.domain"/>
+ </typeAliases>
+ 	<!-- 将环境的配置放到Spring中进行配置，由Spring对其进行管理
+ 		包扫描和导入也交由Spring进行，该文件仅配置别名和相应的插件
+ 	 -->
+ 
+ </configuration>

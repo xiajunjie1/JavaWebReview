@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+ <properties resource="jdbc.properties"></properties>
+ <!-- 配置别名 -->
+ <typeAliases>
+ 	<!-- 扫包，自动生成别名 -->
+ 	<package name="com.maker.domain"/>
+ </typeAliases>
+ 	<environments default="data">
+ 		<environment id="data">
+ 			<transactionManager type="JDBC"></transactionManager>
+ 			<dataSource type="POOLED">
+ 				<property name="driver" value="${jdbc.Driver}"/>
+ 				<property name="url" value="${jdbc.Url}"/>
+ 				<property name="username" value="${jdbc.Username}"/>
+ 				<property name="password" value="${jdbc.Password}"/>
+ 			</dataSource>
+ 		</environment>
+ 	</environments>
+ 	<mappers>
+ 		  <!-- 用此方法引入mapper.xml文件时，xml文件要与接口同名，而且xml文件需要和接口文件放在同一个包中或者两者的包名是相同的 -->
+ 		  <package name="com.maker.dao"/> 
+ 		
+ 		
+ 		<!--   <mapper resource="com/maker/dao/AccountMapper.xml"/> 
+ 	-->
+ 	</mappers>
+ </configuration>
